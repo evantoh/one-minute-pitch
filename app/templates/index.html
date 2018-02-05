@@ -1,15 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    {% if title %}
-    <title> {{ title }}</title>
-    {% else %}
-    <title> welcome to one pitch system</title>
-
-    {% endif %}
-</head>
-<body>
-    
-</body>
-</html>
+{%extends 'base.html'%} {% import 'macros.html' as macro%} {%block content%} {%import 'bootstrap/wtf.html' as wtf%}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-sm-7 col-xs-6">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Pitch Title</th>
+            <th>Pitch Idea</th>
+            <th>time</th>
+            <th>Reviews</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {{ macro.display_pitch(pitch)}}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4 col-sm-5 col-xs-6">
+        {{wtf.quick_form(form)}}
+    </div>
+  </div>
+</div>
+{%endblock%}
