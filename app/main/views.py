@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
 ##remember to import classes from ..requests
-from .forms import pitchIdea,UpdateProfile
+from .forms import pitchIdea,UpdateProfile,CommentForm
 from .. import db, photos
 from flask_login import login_required
 from ..models import User,Pitch,Category
@@ -9,20 +9,39 @@ from ..models import User,Pitch,Category
 We then define our route decorators using the 
 main blueprint instance instead of the app instance
 '''
-@main.route('/',methods=['GET','POST'])
-@login_required
-def index():
 
+
+@main.route('/')
+def index():
+    pitch=Pitch.query.all()
+    return render_template('index.html',pitch=pitch)
+
+@main.route('/tech')
+def tech():
+    tech_pitch=Pitch.query.filter_by(category='tech').all()
+    return render_template('tech.html',tech=tech_pitch)
+
+@main.route('/jobs')
+def jobs():
+    job_pitch=Pitch.query.filter_by(category='jobs').all()
+    return render_template('jobs.html',jobs=job_pitch)
+
+
+@main.route('/new',methods=['GET','POST'])
+@login_required
+def new():
+    
     form=pitchIdea()
 
 
     pitch=Pitch.query.all()
     if form.validate_on_submit():
         title=form.title.data
-        body=form.pitch.data
-        category=form.pitch.data
+        body=form.body.data
+        author=form.author.data
+        category=form.category.data
 
-        new_pitch=Pitch(head=title,body=body,category=category)
+        new_pitch=Pitch(title=title,body=body,autho=author,category=category)
         db.session.add(new_pitch)
         db.session.commit()
 
