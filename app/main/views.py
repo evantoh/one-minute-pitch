@@ -20,8 +20,9 @@ def index():
     if form.validate_on_submit():
         title=form.title.data
         body=form.pitch.data
+        category=form.pitch.data
 
-        new_pitch=Pitch(head=title,body=body)
+        new_pitch=Pitch(head=title,body=body,category=category)
         db.session.add(new_pitch)
         db.session.commit()
 

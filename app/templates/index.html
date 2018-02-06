@@ -1,4 +1,11 @@
-{%extends 'base.html'%} {% import 'macros.html' as macro%} {%block content%} {%import 'bootstrap/wtf.html' as wtf%}
+{%extends 'base.html'%}
+ {% import 'macros.html' as macro%} 
+ {%block content%} 
+ {%import 'bootstrap/wtf.html' as wtf%}
+ {% block styles%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/login.css')}}">
+{% endblock %}
 <div class="container">
   <div class="row">
     <div class="col-md-8 col-sm-7 col-xs-6">
@@ -9,13 +16,15 @@
             <th>Pitch Title</th>
             <th>Pitch Idea</th>
             <th>time</th>
-            <th>Reviews</th>
+            <th>Comment</th>
+            <th>category</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             {{ macro.display_pitch(pitch)}}
           </tr>
+          
         </tbody>
       </table>
     </div>

@@ -47,13 +47,16 @@ class Pitch(db.Model):
 	user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
 	category_id=db.Column(db.Integer,db.ForeignKey('categories.id'))	
 
-	def __repr__(self):
-		return f'User{self.review}'
 
 class Category(db.Model):
 	__tablename__='categories'
 	id=db.Column(db.Integer,primary_key=True)
 	review=db.Column(db.String(255))
+	category_type=db.Column(db.String(255))
 	pitchcat=db.relationship('Pitch',backref='category',lazy='dynamic')
+	def __repr__(self):
+		return f'User{self.review}'
+
+
 
 
