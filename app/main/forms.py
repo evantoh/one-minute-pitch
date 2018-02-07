@@ -13,7 +13,7 @@ class pitchIdea(FlaskForm):
    
     title=StringField('Pitch Title',validators=[Required()])
     author=StringField('Author',validators=[Required()])
-    pitch=TextAreaField('Tell us about your Idea',validators=[Required()])
+    body=TextAreaField('Tell us about your Idea',validators=[Required()])
     category = RadioField('Pick your pitch Category',
                           choices=[('business', 'business'), ('jobs', 'jobs'),('science', 'science'),('tech', 'tech'),('interview', 'interview')],
                           validators=[Required()])

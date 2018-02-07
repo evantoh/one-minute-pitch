@@ -3,10 +3,12 @@
         {% for pitch in pitch_list %}
         <tr>
         <th scope="row"></th>
-            <td>{{ pitch.head}}</td>
+            <td>{{ pitch.title}}</td>
+            <td>{{ pitch.author}}</td>
             <td>{{pitch.body}}</td>
+            <td>{{pitch.category}}</td>
             <td>{{pitch.time}}</td>
-            <td><a href="/pitch/{{pitch.id}}">Review</a></td>
+            <td><a href="/pitch/{{pitch.id}}">comment</a></td>
             
         </tr>            
         {% endfor %}

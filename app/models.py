@@ -8,6 +8,36 @@ def loader_user(user_id):
     return User.query.get(int(user_id))
 
 
+class Pitch(db.Model):
+	__tablename__='pitches'
+	id=db.Column(db.Integer,primary_key=True)
+	title=db.Column(db.String)
+	body=db.Column(db.String)
+	time=db.Column(db.DateTime,default=datetime.utcnow)
+	author=db.Column(db.String)	
+	category=db.Column(db.String)
+	posted = db.Column(db.DateTime, default=datetime.utcnow)
+
+def save_pitches(self):
+	db.session.add(self)
+	db.session.commit()
+
+@classmethod
+def get_pitches(cls):
+	pitches=Pitch.query.all()
+	return pitches
+@classmethod
+def get_categories(cls,category):
+	pitch_category=Pitch.query.filter_by(category = category)
+	return pitch_category
+all_pitches=[]
+
+def __init__(self,title,body,author,category):
+	self.title=title
+	self.body=body
+	self.author=author
+	self.category=category
+
 
 
 class User(UserMixin,db.Model):
@@ -18,7 +48,6 @@ class User(UserMixin,db.Model):
 	bio=db.Column(db.String(255))
 	profile_pic_path=db.Column(db.String(255))
 	pass_secure = db.Column(db.String(255))
-	pitchs=db.relationship('Pitch',backref='user',lazy='dynamic')
 
 	@property
 	def password(self):
@@ -38,24 +67,8 @@ class User(UserMixin,db.Model):
 		return f'User {self.username}'
 
 
-class Pitch(db.Model):
-	__tablename__='pitches'
-	id=db.Column(db.Integer,primary_key=True)
-	head=db.Column(db.String(255))
-	body=db.Column(db.String(255))
-	time=db.Column(db.DateTime,default=datetime.utcnow)
-	user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
-	category_id=db.Column(db.Integer,db.ForeignKey('categories.id'))	
 
 
-class Category(db.Model):
-	__tablename__='categories'
-	id=db.Column(db.Integer,primary_key=True)
-	review=db.Column(db.String(255))
-	category_type=db.Column(db.String(255))
-	pitchcat=db.relationship('Pitch',backref='category',lazy='dynamic')
-	def __repr__(self):
-		return f'User{self.review}'
 
 
 

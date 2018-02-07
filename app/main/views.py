@@ -4,17 +4,32 @@ from . import main
 from .forms import pitchIdea,UpdateProfile,CommentForm
 from .. import db, photos
 from flask_login import login_required
-from ..models import User,Pitch,Category
+from ..models import User,Pitch
 '''
 We then define our route decorators using the 
 main blueprint instance instead of the app instance
 '''
 
 
-@main.route('/')
+@main.route('/',methods=['GET','POST'])
+@login_required
 def index():
+    
+    pitch_form = pitchIdea()
+
+
     pitch=Pitch.query.all()
-    return render_template('index.html',pitch=pitch)
+    if pitch_form.validate_on_submit():
+        title=pitch_form.title.data
+        body=pitch_form.body.data
+        author=pitch_form.author.data
+        category=pitch_form.category.data
+
+        new_pitch=Pitch(title=title,body=body,author=author,category=category)
+        db.session.add(new_pitch)
+        db.session.commit()
+
+    return render_template('index.html',pitch=pitch,pitch_form=pitch_form)
 
 @main.route('/tech')
 def tech():
@@ -31,36 +46,36 @@ def jobs():
 @login_required
 def new():
     
-    form=pitchIdea()
+    pitch_form = pitchIdea()
 
 
     pitch=Pitch.query.all()
-    if form.validate_on_submit():
-        title=form.title.data
-        body=form.body.data
-        author=form.author.data
-        category=form.category.data
+    if pitch_form.validate_on_submit():
+        title=pitch_form.title.data
+        body=pitch_form.body.data
+        author=pitch_form.author.data
+        category=pitch_form.category.data
 
-        new_pitch=Pitch(title=title,body=body,autho=author,category=category)
+        new_pitch=Pitch(title=title,body=body,author=author,category=category)
         db.session.add(new_pitch)
         db.session.commit()
 
-    return render_template('index.html',pitch=pitch,form=form)
+    return render_template('index.html',pitch=pitch,pitch_form=pitch_form)
 
 @main.route('/user/<uname>')
 def profile(uname):
     user=User.query.filter_by(username=uname).first()
-    form=UpdateProfile()
+    pitch_form=UpdateProfile()
     if user is None:
         abort(404)
 
     
-    if form.validate_on_submit():
-        User.bio=form.bio.data
+    if pitch_form.validate_on_submit():
+        User.bio=pitch_form.bio.data
         db.session.add(user)
         db.session.commit()
 
-    return render_template('profile/update.html',user=user.username,form=form)
+    return render_template('profile/update.html',user=user.username,pitch_form=pitch_form)
 
 
 @main.route('/user/<uname>/update',methods=['GET','POST'])
@@ -69,16 +84,16 @@ def update_profile(uname):
     user=User.query.filter_by(username=uname).first()
     if user is None:
         abort(404)
-    form=UpdateProfile()
+    pitch_form=UpdateProfile()
 
-    if form.validate_on_submit():
-        user.bio=form.bio.data
+    if pitch_form.validate_on_submit():
+        user.bio=pitch_form.bio.data
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for('.profile',uname=user.username,form=form))
+        return redirect(url_for('.profile',uname=user.username,pitch_form=pitch_form))
 
-    return render_template('profile/update.html',form=form,user=user)
+    return render_template('profile/update.html',pitch_form=pitch_form,user=user)
 
 
 @main.route('/user/<uname>/update/pic',methods=['POST'])
