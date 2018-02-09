@@ -4,7 +4,7 @@ from . import main
 from .forms import pitchIdea,UpdateProfile,CommentForm
 from .. import db, photos
 from flask_login import login_required
-from ..models import User,Pitch
+from ..models import User,Pitch,Comment
 '''
 We then define our route decorators using the 
 main blueprint instance instead of the app instance
@@ -17,12 +17,12 @@ def comment():
     pitch_form = CommentForm()
 
 
-    pitch=Pitch.query.all()
+    pitch=Comment.query.all()
     if pitch_form.validate_on_submit():
     
-        comment= pitch_form.comment.data
+        comments= pitch_form.comment.data
 
-        new_pitch=Pitch(comment=comment)
+        new_pitch=Comme(comments=comments,pitch=pitch)
         db.session.add(new_pitch)
         db.session.commit()
 
