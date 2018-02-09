@@ -32,6 +32,7 @@ def create_app(config_name):
     db.init_app(app)
     mail.init_app(app)
     login_manager.init_app(app)
+    
     #configure uploads
     configure_uploads(app,photos)
 

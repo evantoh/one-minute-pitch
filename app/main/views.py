@@ -10,6 +10,23 @@ We then define our route decorators using the
 main blueprint instance instead of the app instance
 '''
 
+@main.route('/pitch/comments/',methods=['GET','POST'])
+@login_required
+def comment():
+    
+    pitch_form = CommentForm()
+
+
+    pitch=Pitch.query.all()
+    if pitch_form.validate_on_submit():
+    
+        comment= pitch_form.comment.data
+
+        new_pitch=Pitch(comment=comment)
+        db.session.add(new_pitch)
+        db.session.commit()
+
+    return render_template('comment_form.html',comment_form=pitch_form)
 
 @main.route('/',methods=['GET','POST'])
 @login_required
@@ -65,35 +82,32 @@ def new():
 @main.route('/user/<uname>')
 def profile(uname):
     user=User.query.filter_by(username=uname).first()
-    pitch_form=UpdateProfile()
+
     if user is None:
         abort(404)
 
     
-    if pitch_form.validate_on_submit():
-        User.bio=pitch_form.bio.data
-        db.session.add(user)
-        db.session.commit()
-
-    return render_template('profile/update.html',user=user.username,pitch_form=pitch_form)
+    return render_template('profile/profile.html',user=user.username)
 
 
-@main.route('/user/<uname>/update',methods=['GET','POST'])
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def update_profile(uname):
-    user=User.query.filter_by(username=uname).first()
+    user = User.query.filter_by(username = uname).first()
     if user is None:
         abort(404)
-    pitch_form=UpdateProfile()
 
-    if pitch_form.validate_on_submit():
-        user.bio=pitch_form.bio.data
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for('.profile',uname=user.username,pitch_form=pitch_form))
+        return redirect(url_for('.profile',uname=user.username))
 
-    return render_template('profile/update.html',pitch_form=pitch_form,user=user)
+    return render_template('profile/update.html',form =form)
 
 
 @main.route('/user/<uname>/update/pic',methods=['POST'])

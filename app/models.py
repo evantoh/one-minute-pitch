@@ -8,6 +8,34 @@ def loader_user(user_id):
     return User.query.get(int(user_id))
 
 
+class Comment(db.Model):  # (db.Model)
+    """
+    Defining the pitch object
+    """
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    comment = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+def save_comment(self):
+	db.session.add(self)
+	db.session.commit()
+
+@classmethod
+def get_comments(cls):
+	comments = Comment.query.all()
+	return comments
+
+all_comments = []
+
+def __init__(self,title,comment,user):
+	self.title = title
+	self.comment = comment
+	self.user = user
+
+
 class Pitch(db.Model):
 	__tablename__='pitches'
 	id=db.Column(db.Integer,primary_key=True)
@@ -31,13 +59,6 @@ def get_categories(cls,category):
 	pitch_category=Pitch.query.filter_by(category = category)
 	return pitch_category
 all_pitches=[]
-
-def __init__(self,title,body,author,category):
-	self.title=title
-	self.body=body
-	self.author=author
-	self.category=category
-
 
 
 class User(UserMixin,db.Model):
