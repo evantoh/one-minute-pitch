@@ -11,6 +11,8 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get("evanmwenda@gmail.com")
     MAIL_PASSWORD = os.environ.get("evans123")
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://evans:evans123@localhost/one_minute_pitch'
+    
     
 class ProdConfig(Config):
 
