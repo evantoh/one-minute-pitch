@@ -43,22 +43,27 @@ class Pitch(db.Model):
 	body=db.Column(db.String)
 	time=db.Column(db.DateTime,default=datetime.utcnow)
 	author=db.Column(db.String)	
+	downvote=db.Column(db.Integer)
+	upvote=db.Column(db.Integer)
 	category=db.Column(db.String)
+	user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 	posted = db.Column(db.DateTime, default=datetime.utcnow)
 
-def save_pitches(self):
-	db.session.add(self)
-	db.session.commit()
 
-@classmethod
-def get_pitches(cls):
-	pitches=Pitch.query.all()
-	return pitches
-@classmethod
-def get_categories(cls,category):
-	pitch_category=Pitch.query.filter_by(category = category)
-	return pitch_category
-all_pitches=[]
+
+	def save_pitches(self):
+		db.session.add(self)
+		db.session.commit()
+
+	@classmethod
+	def get_pitches(cls):
+		pitches=Pitch.query.all()
+		return pitches
+	@classmethod
+	def get_categories(cls,category):
+		pitch_category=Pitch.query.filter_by(category = category)
+		return pitch_category
+	all_pitches=[]
 
 
 class User(UserMixin,db.Model):

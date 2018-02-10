@@ -18,10 +18,15 @@
 
      {% endfor %}
      <!-- Login form  -->
+     <div>
+      {{ wtf.quick_form(login_form) }}
+     </div>
 
-     {{ wtf.quick_form(login_form) }}
-
-     <p> Don't  have an account?  <a href="{{url_for('auth.register')}}">Sign up here</a></p>
+    
+<div>
+  Don't  have an account?  <a href="{{url_for('auth.register')}}">Sign up here</a>
+</div>
+ 
 
    </div>
 

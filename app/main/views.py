@@ -22,7 +22,7 @@ def comment():
     
         comments= pitch_form.comment.data
 
-        new_pitch=Comme(comments=comments,pitch=pitch)
+        new_pitch=Comment(comments=comments,pitch=pitch)
         db.session.add(new_pitch)
         db.session.commit()
 
@@ -87,7 +87,7 @@ def profile(uname):
         abort(404)
 
     
-    return render_template('profile/profile.html',user=user.username)
+    return render_template('profile/profile.html',user=user)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
