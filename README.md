@@ -1,5 +1,5 @@
 # ONE MINUTE PITCH
-###Application where users can add new pitches, 5/2/2018
+#Application where users can add new pitches, 5/2/2018
 #### By **evans mwenda**
 ## Description
 This is an app that allows users to view,submit & pitches based on categories
